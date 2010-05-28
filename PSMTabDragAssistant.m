@@ -208,40 +208,8 @@ static PSMTabDragAssistant *sharedDragAssistant = nil;
 
 - (void)performDragOperation
 {
-    /* What we want to do here is to move the tab cell at the index of targetCell, but we *also*
-       want to move the represented NSTabViewItem at the correct index. This is a bit tricky because
-       there are more tab cells than NSTabViewItems. So what we do after having moved the cell is we
-       look at all cells following destIndex and stop at the first one that has a representedObject
-       (a NSTabViewItem). Then, we can know where to insert our tab.
-     */
-    PSMTabBarControl *src = [self sourceTabBar];
     PSMTabBarControl *dest = [self destinationTabBar];
-    NSTabViewItem *draggedTab = [[self draggedCell] representedObject];
-    NSTabViewItem *targetTab = nil;
-    NSInteger destIndex = [[dest cells] indexOfObject:[self targetCell]];
-    /* Move cell */
-    [[dest cells] replaceObjectAtIndex:destIndex withObject:[self draggedCell]];
-    [[self draggedCell] setControlView:dest];
-    /* move actual NSTabViewItem */
-    [[src tabView] setDelegate:nil];
-    [[dest tabView] setDelegate:nil];
-    for (NSInteger i=destIndex+1; i<[[dest cells] count]; i++) {
-        PSMTabBarCell *cell = [[dest cells] objectAtIndex:i];
-        if ([cell representedObject] != nil) {
-            targetTab = [cell representedObject];
-            break;
-        }
-    }
-    [[src tabView] removeTabViewItem:draggedTab];
-    if (targetTab != nil) {
-        destIndex = [[dest tabView] indexOfTabViewItem:targetTab];
-        [[dest tabView] insertTabViewItem:draggedTab atIndex:destIndex];
-    }
-    else {
-        [[dest tabView] addTabViewItem:draggedTab];
-    }
-    [[src tabView] setDelegate:src];
-    [[dest tabView] setDelegate:dest];
+    [dest insertCell:[self draggedCell] fromTabBar:[self sourceTabBar] beforeCell:[self targetCell]];
     [self finishDrag];
 }
 

@@ -112,14 +112,16 @@ enum {
 - (PSMOverflowPopUpButton *)overflowPopUpButton;
 - (NSMutableArray *)representedTabViewItems;
 
-// special effects
+// utilities
 - (void)hideTabBar:(BOOL)hide animate:(BOOL)animate;
+- (void)insertCell:(PSMTabBarCell *)aCell fromTabBar:(PSMTabBarControl *)aSourceBar beforeCell:(PSMTabBarCell *)aDropCell;
 
 @end
 
 
 @interface NSObject (TabBarControlDelegateMethods)
-- (BOOL)tabView:(NSTabView *)aTabView shouldCloseTabViewItem:(NSTabViewItem *)tabViewItem;
-- (void)tabView:(NSTabView *)aTabView willCloseTabViewItem:(NSTabViewItem *)tabViewItem;
-- (void)tabView:(NSTabView *)aTabView didCloseTabViewItem:(NSTabViewItem *)tabViewItem;
+- (BOOL)tabView:(NSTabView *)aTabView shouldCloseTabViewItem:(NSTabViewItem *)aTabViewItem;
+- (void)tabView:(NSTabView *)aTabView willCloseTabViewItem:(NSTabViewItem *)aTabViewItem;
+- (void)tabView:(NSTabView *)aTabView didCloseTabViewItem:(NSTabViewItem *)aTabViewItem;
+- (void)tabView:(NSTabView *)aTabView movedTab:(NSTabViewItem *)aTabViewItem fromIndex:(NSInteger)aFrom toIndex:(NSInteger)aTo;
 @end

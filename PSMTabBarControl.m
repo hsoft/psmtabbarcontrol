@@ -1018,6 +1018,48 @@
 
 }
 
+/* Called by the drag assistant when the drop is completed */
+- (void)insertCell:(PSMTabBarCell *)aCell fromTabBar:(PSMTabBarControl *)aSourceBar beforeCell:(PSMTabBarCell *)aDropCell
+{
+    /* What we want to do here is to move the tab cell at the index of targetCell, but we *also*
+       want to move the represented NSTabViewItem at the correct index. This is a bit tricky because
+       there are more tab cells than NSTabViewItems. So what we do after having moved the cell is we
+       look at all cells following destIndex and stop at the first one that has a representedObject
+       (a NSTabViewItem). Then, we can know where to insert our tab.
+     */
+    NSTabViewItem *draggedTab = [aCell representedObject];
+    NSTabViewItem *targetTab = nil;
+    NSInteger destIndex = [[self cells] indexOfObject:aDropCell];
+    /* Move cell */
+    [[self cells] replaceObjectAtIndex:destIndex withObject:aCell];
+    [aCell setControlView:self];
+    /* move actual NSTabViewItem */
+    [[aSourceBar tabView] setDelegate:nil];
+    [[self tabView] setDelegate:nil];
+    for (NSInteger i=destIndex+1; i<[[self cells] count]; i++) {
+        PSMTabBarCell *cell = [[self cells] objectAtIndex:i];
+        if ([cell representedObject] != nil) {
+            targetTab = [cell representedObject];
+            break;
+        }
+    }
+    NSInteger fromIndex = [[aSourceBar tabView] indexOfTabViewItem:draggedTab];
+    [[aSourceBar tabView] removeTabViewItem:draggedTab];
+    if (targetTab != nil) {
+        destIndex = [[self tabView] indexOfTabViewItem:targetTab];
+        [[self tabView] insertTabViewItem:draggedTab atIndex:destIndex];
+    }
+    else {
+        [[self tabView] addTabViewItem:draggedTab];
+    }
+    [[aSourceBar tabView] setDelegate:aSourceBar];
+    [[self tabView] setDelegate:self];
+    
+    if (([self delegate]) && ([[self delegate] respondsToSelector:@selector(tabView:movedTab:fromIndex:toIndex:)])) {
+        [[self delegate] tabView:[self tabView] movedTab:draggedTab fromIndex:fromIndex toIndex:destIndex];
+    }
+}
+
 #pragma mark -
 #pragma mark Actions
 
