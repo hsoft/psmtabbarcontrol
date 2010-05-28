@@ -1034,8 +1034,6 @@
     [[self cells] replaceObjectAtIndex:destIndex withObject:aCell];
     [aCell setControlView:self];
     /* move actual NSTabViewItem */
-    [[aSourceBar tabView] setDelegate:nil];
-    [[self tabView] setDelegate:nil];
     for (NSInteger i=destIndex+1; i<[[self cells] count]; i++) {
         PSMTabBarCell *cell = [[self cells] objectAtIndex:i];
         if ([cell representedObject] != nil) {
@@ -1043,7 +1041,19 @@
             break;
         }
     }
+    if (targetTab == draggedTab) {
+        /* source same as dest, do nothing */
+        return;
+    }
+    BOOL wasSelected = [[aSourceBar tabView] selectedTabViewItem] == draggedTab;
     NSInteger fromIndex = [[aSourceBar tabView] indexOfTabViewItem:draggedTab];
+    if ((aSourceBar == self) && (targetTab == nil) && (fromIndex == [[aSourceBar tabView] numberOfTabViewItems]-1)) {
+        /* Trying to move last item at the end of the bar. do nothing. */
+        return;
+    }
+    
+    [[aSourceBar tabView] setDelegate:nil];
+    [[self tabView] setDelegate:nil];
     [[aSourceBar tabView] removeTabViewItem:draggedTab];
     if (targetTab != nil) {
         destIndex = [[self tabView] indexOfTabViewItem:targetTab];
@@ -1054,6 +1064,9 @@
     }
     [[aSourceBar tabView] setDelegate:aSourceBar];
     [[self tabView] setDelegate:self];
+    if (wasSelected) {
+        [[self tabView] selectTabViewItem:draggedTab];
+    }
     
     if (([self delegate]) && ([[self delegate] respondsToSelector:@selector(tabView:movedTab:fromIndex:toIndex:)])) {
         [[self delegate] tabView:[self tabView] movedTab:draggedTab fromIndex:fromIndex toIndex:destIndex];
