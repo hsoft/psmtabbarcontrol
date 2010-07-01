@@ -32,6 +32,7 @@
     BOOL                _isCloseButtonSuppressed;
     BOOL                _hasIcon;
     NSInteger           _count;
+    NSImage             *_icon;
 }
 
 // creation/destruction
@@ -67,6 +68,8 @@
 - (BOOL)isCloseButtonSuppressed;
 - (BOOL)hasIcon;
 - (void)setHasIcon:(BOOL)value;
+- (NSImage *)icon;
+- (void)setIcon:(NSImage *)aIcon;
 - (NSInteger)count;
 - (void)setCount:(NSInteger)value;
 - (BOOL)isPlaceholder;

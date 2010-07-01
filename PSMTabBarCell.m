@@ -34,6 +34,7 @@
         _isCloseButtonSuppressed = NO;
         _count = 0;
         _isPlaceholder = NO;
+        _icon = nil;
     }
     return self;
 }
@@ -55,6 +56,7 @@
         _hasCloseButton = YES;
         _isCloseButtonSuppressed = NO;
         _count = 0;
+        _icon = nil;
         
         if(value){
             [self setCurrentStep:(kPSMTabDragAnimationSteps - 1)];
@@ -70,6 +72,7 @@
 - (void)dealloc
 {
     [_indicator release];
+    [_icon release];
     [super dealloc];
 }
 
@@ -207,13 +210,24 @@
 
 - (BOOL)hasIcon
 {
-    return _hasIcon;
+    return _hasIcon || (_icon != nil);
 }
 
 - (void)setHasIcon:(BOOL)value
 {
     _hasIcon = value;
     [_controlView update]; // binding notice is too fast
+}
+
+- (NSImage *)icon
+{
+    return _icon;
+}
+
+- (void)setIcon:(NSImage *)aIcon
+{
+    [_icon release];
+    _icon = [aIcon retain];
 }
 
 - (NSInteger)count
