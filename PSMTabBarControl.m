@@ -671,9 +671,7 @@
         // Determine cell width
         if(_sizeCellsToFit){
             width = [cell desiredWidthOfCell];
-            if (width > _cellMaxWidth) {
-                width = _cellMaxWidth;
-            }
+            width = MAX(MIN(width, _cellMaxWidth), _cellMinWidth);
         } else {
             width = _cellOptimumWidth;
         }
