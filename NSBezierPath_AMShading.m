@@ -4,7 +4,7 @@
 //
 //  Created by Andreas on 2005-06-01.
 //  Copyright 2005 Andreas Mayer. All rights reserved.
-//  Copyright 2010 Hardcoded Software (http://www.hardcoded.net)
+//  Copyright 2011 Hardcoded Software (http://www.hardcoded.net)
 //
 
 #import "NSBezierPath_AMShading.h"

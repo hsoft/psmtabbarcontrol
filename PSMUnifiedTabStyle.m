@@ -4,7 +4,7 @@
 //
 //  Created by Keith Blount on 30/04/2006.
 //  Copyright 2006 Keith Blount. All rights reserved.
-//  Copyright 2010 Hardcoded Software (http://www.hardcoded.net)
+//  Copyright 2011 Hardcoded Software (http://www.hardcoded.net)
 //
 
 #import "PSMUnifiedTabStyle.h"

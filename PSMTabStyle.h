@@ -4,7 +4,7 @@
 //
 //  Created by John Pannell on 2/17/06.
 //  Copyright 2006 Positive Spin Media. All rights reserved.
-//  Copyright 2010 Hardcoded Software (http://www.hardcoded.net)
+//  Copyright 2011 Hardcoded Software (http://www.hardcoded.net)
 //
 
 /* 
