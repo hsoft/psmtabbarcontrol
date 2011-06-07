@@ -106,6 +106,7 @@ enum {
 - (id)partnerView;
 - (void)setPartnerView:(id)view;
 - (PSMTabBarCell *)cellAtIndex:(NSInteger)index;
+- (PSMTabBarCell *)cellForTab:(NSTabViewItem *)tabItem;
 
 // the buttons
 - (PSMRolloverButton *)addTabButton;

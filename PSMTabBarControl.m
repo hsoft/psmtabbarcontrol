@@ -607,6 +607,16 @@
     return [_cells objectAtIndex:index];
 }
 
+- (PSMTabBarCell *)cellForTab:(NSTabViewItem *)tabItem
+{
+    for (PSMTabBarCell *cell in _cells) {
+        if ([cell representedObject] == tabItem) {
+            return cell;
+        }
+    }
+    return nil;
+}
+
 #pragma mark -
 #pragma mark Drawing
 
@@ -1024,7 +1034,7 @@
        there are more tab cells than NSTabViewItems. So what we do after having moved the cell is we
        look at all cells following destIndex and stop at the first one that has a representedObject
        (a NSTabViewItem). Then, we can know where to insert our tab.
-     */
+    */
     NSTabViewItem *draggedTab = [aCell representedObject];
     NSTabViewItem *targetTab = nil;
     NSInteger destIndex = [[self cells] indexOfObject:aDropCell];
@@ -1062,12 +1072,13 @@
     }
     [[aSourceBar tabView] setDelegate:aSourceBar];
     [[self tabView] setDelegate:self];
-    if (wasSelected) {
-        [[self tabView] selectTabViewItem:draggedTab];
-    }
     
     if (([self delegate]) && ([[self delegate] respondsToSelector:@selector(tabView:movedTab:fromIndex:toIndex:)])) {
         [[self delegate] tabView:[self tabView] movedTab:draggedTab fromIndex:fromIndex toIndex:destIndex];
+    }
+    
+    if (wasSelected) {
+        [[self tabView] selectTabViewItem:draggedTab];
     }
 }
 
