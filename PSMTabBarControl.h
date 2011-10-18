@@ -82,6 +82,7 @@ enum {
 // control configuration
 - (BOOL)canCloseOnlyTab;
 - (void)setCanCloseOnlyTab:(BOOL)value;
+- (id<PSMTabStyle>)style;
 - (NSString *)styleName;
 - (void)setStyleNamed:(NSString *)name;
 - (BOOL)hideForSingleTab;

@@ -140,7 +140,7 @@
 
 - (NSAttributedString *)attributedStringValue
 {
-    return [(id <PSMTabStyle>)[_controlView style] attributedStringValueForTabCell:self];
+    return [[(PSMTabBarControl *)_controlView style] attributedStringValueForTabCell:self];
 }
 
 - (NSInteger)tabState
@@ -272,22 +272,22 @@
 
 - (NSRect)indicatorRectForFrame:(NSRect)cellFrame
 {
-    return [(id <PSMTabStyle>)[_controlView style] indicatorRectForTabCell:self];
+    return [[(PSMTabBarControl *)_controlView style] indicatorRectForTabCell:self];
 }
 
 - (NSRect)closeButtonRectForFrame:(NSRect)cellFrame
 {
-    return [(id <PSMTabStyle>)[_controlView style] closeButtonRectForTabCell:self];
+    return [[(PSMTabBarControl *)_controlView style] closeButtonRectForTabCell:self];
 }
 
 - (CGFloat)minimumWidthOfCell
 {
-    return [(id <PSMTabStyle>)[_controlView style] minimumWidthOfTabCell:self];
+    return [[(PSMTabBarControl *)_controlView style] minimumWidthOfTabCell:self];
 }
 
 - (CGFloat)desiredWidthOfCell
 {
-    return [(id <PSMTabStyle>)[_controlView style] desiredWidthOfTabCell:self];
+    return [[(PSMTabBarControl *)_controlView style] desiredWidthOfTabCell:self];
 }  
 
 #pragma mark -
@@ -301,7 +301,7 @@
         return;
     }
     
-    [(id <PSMTabStyle>)[_controlView style] drawTabCell:self];	
+    [[(PSMTabBarControl *)_controlView style] drawTabCell:self];	
 }
 
 #pragma mark -
@@ -336,7 +336,7 @@
 
 - (NSImage*)dragImageForRect:(NSRect)cellFrame
 {
-    if(([self state] == NSOnState) && ([[_controlView styleName] isEqualToString:@"Metal"]))
+    if(([self state] == NSOnState) && ([[(PSMTabBarControl *)_controlView styleName] isEqualToString:@"Metal"]))
         cellFrame.size.width += 1.0;
     [_controlView lockFocus];
     NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:cellFrame];
@@ -351,7 +351,7 @@
         NSImage *pi = [[NSImage alloc] initByReferencingFile:[[PSMTabBarControl bundle] pathForImageResource:@"pi"]];
         [returnImage lockFocus];
         NSPoint indicatorPoint = NSMakePoint([self frame].size.width - MARGIN_X - kPSMTabBarIndicatorWidth, MARGIN_Y);
-        if(([self state] == NSOnState) && ([[_controlView styleName] isEqualToString:@"Metal"]))
+        if(([self state] == NSOnState) && ([[(PSMTabBarControl *)_controlView styleName] isEqualToString:@"Metal"]))
             indicatorPoint.y += 1.0;
         [pi compositeToPoint:indicatorPoint operation:NSCompositeSourceOver fraction:0.7];
         [returnImage unlockFocus];
