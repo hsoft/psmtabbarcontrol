@@ -394,7 +394,7 @@
         NSRect iconRect = [self iconRectForTabCell:cell];
         NSImage *icon = [cell icon];
         if (icon == nil) {
-            icon = [[[[cell representedObject] identifier] content] icon];
+            icon = [[cell representedObjectContent] icon];
         }
         if ([controlView isFlipped]) {
             iconRect.origin.y = cellFrame.size.height - iconRect.origin.y;

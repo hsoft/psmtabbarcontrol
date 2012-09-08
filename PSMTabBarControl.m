@@ -385,41 +385,36 @@
     // create cell
     PSMTabBarCell *cell = [[PSMTabBarCell alloc] initWithControlView:self];
     [cell setRepresentedObject:item];
+    id representedContent = [cell representedObjectContent];
     // bind the indicator to the represented object's status (if it exists)
     [[cell indicator] setHidden:YES];
-    if([item identifier] != nil){
-        if([[item identifier] respondsToSelector:@selector(content)]){
-            if([[[[cell representedObject] identifier] content] respondsToSelector:@selector(isProcessing)]){
-                NSMutableDictionary *bindingOptions = [NSMutableDictionary dictionary];
-                [bindingOptions setObject:NSNegateBooleanTransformerName forKey:@"NSValueTransformerName"];
-                [[cell indicator] bind:@"animate" toObject:[item identifier] withKeyPath:@"selection.isProcessing" options:nil];
-                [[cell indicator] bind:@"hidden" toObject:[item identifier] withKeyPath:@"selection.isProcessing" options:bindingOptions];
-                [[item identifier] addObserver:self forKeyPath:@"selection.isProcessing" options:0 context:nil];
-            } 
+    if (representedContent != nil) {
+        if ([representedContent respondsToSelector:@selector(isProcessing)]) {
+            NSMutableDictionary *bindingOptions = [NSMutableDictionary dictionary];
+            [bindingOptions setObject:NSNegateBooleanTransformerName forKey:@"NSValueTransformerName"];
+            [[cell indicator] bind:@"animate" toObject:[item identifier] withKeyPath:@"selection.isProcessing" options:nil];
+            [[cell indicator] bind:@"hidden" toObject:[item identifier] withKeyPath:@"selection.isProcessing" options:bindingOptions];
+            [[item identifier] addObserver:self forKeyPath:@"selection.isProcessing" options:0 context:nil];
         } 
     } 
     
     // bind for the existence of an icon
     [cell setHasIcon:NO];
-    if([item identifier] != nil){
-        if([[item identifier] respondsToSelector:@selector(content)]){
-            if([[[[cell representedObject] identifier] content] respondsToSelector:@selector(icon)]){
-                NSMutableDictionary *bindingOptions = [NSMutableDictionary dictionary];
-                [bindingOptions setObject:NSIsNotNilTransformerName forKey:@"NSValueTransformerName"];
-                [cell bind:@"hasIcon" toObject:[item identifier] withKeyPath:@"selection.icon" options:bindingOptions];
-                [[item identifier] addObserver:self forKeyPath:@"selection.icon" options:0 context:nil];
-            } 
+    if (representedContent != nil){
+        if ([representedContent respondsToSelector:@selector(icon)]){
+            NSMutableDictionary *bindingOptions = [NSMutableDictionary dictionary];
+            [bindingOptions setObject:NSIsNotNilTransformerName forKey:@"NSValueTransformerName"];
+            [cell bind:@"hasIcon" toObject:[item identifier] withKeyPath:@"selection.icon" options:bindingOptions];
+            [[item identifier] addObserver:self forKeyPath:@"selection.icon" options:0 context:nil];
         } 
     }
     
     // bind for the existence of a counter
     [cell setCount:0];
-    if([item identifier] != nil){
-        if([[item identifier] respondsToSelector:@selector(content)]){
-            if([[[[cell representedObject] identifier] content] respondsToSelector:@selector(objectCount)]){
-                [cell bind:@"count" toObject:[item identifier] withKeyPath:@"selection.objectCount" options:nil];
-                [[item identifier] addObserver:self forKeyPath:@"selection.objectCount" options:0 context:nil];
-            } 
+    if (representedContent != nil) {
+        if ([representedContent respondsToSelector:@selector(objectCount)]) {
+            [cell bind:@"count" toObject:[item identifier] withKeyPath:@"selection.objectCount" options:nil];
+            [[item identifier] addObserver:self forKeyPath:@"selection.objectCount" options:0 context:nil];
         } 
     }
     
@@ -828,9 +823,9 @@
             if ([[cell representedObject] isEqualTo:[tabView selectedTabViewItem]])
                 [menuItem setState:NSOnState];
             if([cell hasIcon])
-                [menuItem setImage:[[[[cell representedObject] identifier] content] icon]];
+                [menuItem setImage:[[cell representedObjectContent] icon]];
             if([cell count] > 0)
-                [menuItem setTitle:[[menuItem title] stringByAppendingFormat:@" (%d)",[cell count]]];
+                [menuItem setTitle:[[menuItem title] stringByAppendingFormat:@" (%ld)", (long)[cell count]]];
             [overflowMenu addItem:menuItem];
         }
     }

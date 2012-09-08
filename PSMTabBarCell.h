@@ -76,6 +76,7 @@
 - (void)setIsPlaceholder:(BOOL)value;
 - (NSInteger)currentStep;
 - (void)setCurrentStep:(NSInteger)value;
+- (id)representedObjectContent;
 
 // component attributes
 - (NSRect)indicatorRectForFrame:(NSRect)cellFrame;

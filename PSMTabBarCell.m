@@ -267,6 +267,20 @@
     _currentStep = value;
 }
 
+- (id)representedObjectContent
+{
+    /* return [[self representedObject] identifier] content] with the proper respondsToSelector:
+       checks. This way, we avoid repetition and compiler warnings.
+    */
+    id obj = [self representedObject];
+    if (([obj identifier] != nil) && ([[obj identifier] respondsToSelector:@selector(content)])) {
+        return [(id)[obj identifier] content];
+    }
+    else {
+        return nil;
+    }
+}
+
 #pragma mark -
 #pragma mark Component Attributes
 
