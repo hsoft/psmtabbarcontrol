@@ -1,0 +1,6 @@
+syntax: glob
+
+build
+.waf*
+.lock-waf*
+*.framework
