@@ -12,6 +12,7 @@ except ImportError:
     # Probably in the parent folder
     sys.path.insert(0, '..')
 from hscommon.build import OSXFrameworkStructure
+from hscommon.util import modified_after
 
 # Make sure to set CFLAGS and LDFLAGS (to have correct archs and isysroot) first.
 
@@ -26,8 +27,8 @@ def configure(conf):
     conf.load('compiler_c')
     conf.env.FRAMEWORK_COCOA = 'Cocoa'
     # Have the save compile/link flags as our python installation.
-    conf.env.append_value('CFLAGS', sysconfig.get_config_var('CFLAGS'))
-    conf.env.append_value('LDFLAGS', sysconfig.get_config_var('LDFLAGS'))
+    conf.env.append_value('CFLAGS', sysconfig.get_config_var('CFLAGS').split(' '))
+    conf.env.append_value('LINKFLAGS', sysconfig.get_config_var('LDFLAGS').split(' '))
     conf.env.append_value('LINKFLAGS', ['-install_name', '@rpath/PSMTabBarControl.framework/PSMTabBarControl'])
 
 def build(ctx):
@@ -41,6 +42,9 @@ def build(ctx):
 
 def build_framework(ctx):
     fmk = OSXFrameworkStructure('PSMTabBarControl.framework')
+    if not modified_after('build/PSMTabBarControl', fmk.executablepath):
+        print("No need to build the PSMTabBarControl framework, it's up-to-date.")
+        return
     fmk.create('Info.plist')
     fmk.copy_executable('build/PSMTabBarControl')
     fmk.copy_headers(*glob.glob('*.h'))
