@@ -26,6 +26,7 @@ def configure(conf):
     conf.env.CC = 'clang'
     conf.load('compiler_c')
     conf.env.FRAMEWORK_COCOA = 'Cocoa'
+    conf.env.MACOSX_DEPLOYMENT_TARGET = '10.6'
     # Have the save compile/link flags as our python installation.
     conf.env.append_value('CFLAGS', sysconfig.get_config_var('CFLAGS').split(' '))
     conf.env.append_value('LINKFLAGS', sysconfig.get_config_var('LDFLAGS').split(' '))
